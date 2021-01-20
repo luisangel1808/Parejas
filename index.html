@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Pairs</title>
+</head>
+<body>
+    <section id="main" class="main hidden">
+        <div class="record hidden">
+            <h2>Mejores puntajes</h2>
+            <ol class="list">
+    
+            </ol>
+        </div>
+        <div class="container">
+            
+        </div>
+        <div class="feedback">
+            <p class="p"></p>
+            <div class="timer">
+                <p class="timer__p"></p>
+            </div>
+        </div>
+    </section>
+
+    <section id="login" class="login">
+        <div class="login__container">
+            <h1>Nuevo juego de memoria</h1>
+            <h2>Selecciona las opciones</h2>
+            <input type="text" id="name" placeholder="Ingresa tu nombre">
+            <div class="clase">
+                <p>Fácil</p>
+                <label class="switch">                
+                    <input type="checkbox" id="level">                
+                    <span class="slider round"></span>
+                  </label>
+                  <p>Difícil</p>
+            </div>
+            <button type="submit" onclick="start()">Comenzar</button>       
+        </div>
+    </section>
+ 
+    <script src="index.js"></script>
+</body>
+</html>
