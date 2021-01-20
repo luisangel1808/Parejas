@@ -12,7 +12,8 @@ const main = document.getElementById("main");
 const login = document.getElementById("login");
 const container = document.querySelector(".container");
 const feedbackContainer = document.querySelector(".feedback");
-
+const timerContainer = document.querySelector(".timer__p");
+timerContainer.innerHTML = `00:00`;
 function init() {
   const timer = () => {
     setInterval(setTimer, 1000);
@@ -32,7 +33,6 @@ function init() {
     if (minutes < 10) {
       minutesBoard = `0${minutes}`;
     }
-    const timerContainer = document.querySelector(".timer__p");
     timerContainer.innerHTML = `${minutesBoard}:${secondsBoard}`;
   };
 
@@ -51,6 +51,7 @@ function init() {
   });
 
   const p = document.querySelector(".p");
+  p.innerHTML = "Vamos!";
   feedbackContainer.appendChild(p);
 
   Squares.sort((a, b) => {
@@ -135,7 +136,7 @@ function init() {
             move = true;
           }
         }),
-      2000
+      1000
     );
   };
 
