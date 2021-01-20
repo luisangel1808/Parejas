@@ -160,7 +160,8 @@ function removeElements() {
   while (container.lastChild) {
     container.removeChild(container.lastChild);
   }
-
+  minutes = 0;
+  seconds = 0;
   aciertos = 0;
   fallos = 0;
   images = [];
