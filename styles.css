@@ -26,6 +26,7 @@ h2{
 .container{
     display: flex;
     flex:2;
+    margin-top: 5px;
     flex-direction: column;
     align-items: center;
 }
@@ -36,8 +37,8 @@ h2{
     background-color: antiquewhite;
     border: 1px black solid;
     margin: 5px;
-    width: 10vh;
-    height: 10vh;
+    width: 12vh;
+    height: 12vh;
     box-shadow: 3px 3px 3px 2px rgba(0, 0, 0, 0.2);
 }
 
@@ -94,12 +95,44 @@ ol li{
     display: hidden;
 }
 
-
-
-
-
-
-
+table {
+    table-layout: fixed;
+    width: 100%;
+    max-width: 700px;
+    border-collapse: collapse;
+    font-size: 2em;
+    border: 1px solid black;
+    margin-block: 10px;
+  }
+  
+  thead th:nth-child(1) {
+    width: 30%;
+  }
+  
+  thead th:nth-child(2) {
+    width: 40%;
+  }
+  
+  thead th:nth-child(3) {
+    width: 30%;
+  }
+  th, td {
+    padding: 10px;
+    text-shadow: 1px 1px 1px white;
+  }
+  td{
+      text-align: center;
+  }
+  tbody tr:nth-child(odd) {
+    background-color: #e9d7e4;
+  }
+  
+  tbody tr:nth-child(even) {
+    background-color: #d0e2e1;
+  }
+  thead{
+      background-color: honeydew;
+  }
 
 .switch {
     position: relative;
@@ -222,10 +255,17 @@ ol li{
     display: none;
 }
 
+.scores{
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
 
-@media (max-width: 700px) {
+@media (max-width: 650px) {
     .square{
-        width: 30px;
-        height: 30px;
+        width: 38px;
+        height: 38px;
     }
 }

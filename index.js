@@ -1,10 +1,14 @@
-let names = [];
+let player;
 let n;
 let images = [];
 let move = true;
 let figuras = 0;
 let minutes = 0;
 let seconds = 0;
+let secondsBoard=0;
+let minutesBoard=0;
+let uncoveredSquares=[]
+let active = true;
 const urlAPI = "https://randomfox.ca/images/";
 let aciertos = 0;
 let fallos = 0;
@@ -15,32 +19,13 @@ const feedbackContainer = document.querySelector(".feedback");
 const timerContainer = document.querySelector(".timer__p");
 timerContainer.innerHTML = `00:00`;
 function init() {
-  const timer = () => {
-    setInterval(setTimer, 1000);
-  };
-
-  const setTimer = () => {
-    seconds++;
-    if (seconds === 60) {
-      seconds = 0;
-      minutes++;
-    }
-    secondsBoard = `${seconds}`;
-    minutesBoard = `${minutes}`;
-    if (seconds < 10) {
-      secondsBoard = `0${seconds}`;
-    }
-    if (minutes < 10) {
-      minutesBoard = `0${minutes}`;
-    }
-    timerContainer.innerHTML = `${minutesBoard}:${secondsBoard}`;
-  };
-
-  timer();
+    timer();
+  
   login.classList.add("hidden");
   main.classList.remove("hidden");
-  for (let index = 1; index <= figuras; index++) {
-    images.push(`https://randomfox.ca/images/${index}.jpg`);
+  let index=  Math.ceil(Math.random()*20)
+  for ( let i=index; i < (figuras+index); i++) {
+    images.push(`${urlAPI}${i}.jpg`);
   }
 
   let Squares = images.concat(images).map((symbol) => {
@@ -90,35 +75,34 @@ function init() {
   let squareSelected = [];
 
   const checkPair = (square) => {
-    if (squareSelected.length == 0) {
-      squareSelected.push(square);
-    } else if (squareSelected.length == 1) {
-      if (square.getAttribute("id") !== squareSelected[0].getAttribute("id")) {
+    if (uncoveredSquares.includes(square.id)===false) {
+      if (squareSelected.length == 0) {
         squareSelected.push(square);
+      } else if (squareSelected.length == 1) {
+        if (square.getAttribute("id") !== squareSelected[0].getAttribute("id")) {
+          squareSelected.push(square);
+        }
       }
-    }
-
-    squareSelected[squareSelected.length - 1].lastChild.src = squareSelected[
-      squareSelected.length - 1
-    ].getAttribute("image");
-
-    if (squareSelected.length == 2) {
-      squareSelected[0].getAttribute("image") === square.getAttribute("image")
-        ? goodAnswer()
-        : badAnswer();
-    }
-  };
-
+    squareSelected[squareSelected.length - 1].lastChild.src = squareSelected[squareSelected.length - 1].getAttribute("image");
+      if (squareSelected.length == 2) {
+        squareSelected[0].getAttribute("image") === square.getAttribute("image")
+          ? goodAnswer()
+          : badAnswer();
+      }
+    };
+  }
   const goodAnswer = () => {
+    uncoveredSquares.push(squareSelected[0].id)
+    uncoveredSquares.push(squareSelected[1].id)
     p.innerHTML = "Genial!";
     feedbackContainer.appendChild(p);
     squareSelected.splice(0);
     aciertos++;
     if (aciertos === figuras) {
-      saveScore();
-      removeElements();
-      playAgain();
+      active=false;
       alert("Felicidades, ganaste");
+      showTable();
+      removeElements();
     }
   };
 
@@ -140,19 +124,13 @@ function init() {
     );
   };
 
-  list = document.querySelector(".list");
-  const saveScore = () => {
-    li = document.createElement("li");
-    li.innerHTML = `${names[names.length - 1]} Errores:${fallos}`;
-    list.appendChild(li);
-  };
+
 }
 
 function start() {
   const level = document.getElementById("level");
-  const name = document.getElementById("name").value;
-  names.push(name);
-  level.checked === true ? (n = 6) : (n = 4);
+  player = document.getElementById("name").value;
+  level.checked === true ? (n = 6) : (n = 2);
   figuras = n ** 2 / 2;
   init();
 }
@@ -164,6 +142,9 @@ function removeElements() {
   seconds = 0;
   aciertos = 0;
   fallos = 0;
+  secondsBoard=0;
+  minutesBoard=0;
+  uncoveredSquares= []
   images = [];
 }
 
@@ -171,3 +152,58 @@ function playAgain() {
   main.classList.add("hidden");
   login.classList.remove("hidden");
 }
+
+const showTable = () =>{
+  const scoresBody = document.getElementById('scoresbody')
+  const tdName = document.createElement('td')
+  const tRow = document.createElement('tr')
+  scoresBody.appendChild(tRow);
+  tdName.innerText=player
+  tRow.appendChild(tdName)
+  const tdScore = document.createElement('td')
+  tdScore.innerText=`${fallos}`
+  tRow.appendChild(tdScore)
+  const tdTime = document.createElement('td')
+  tdTime.innerText=`${minutesBoard}:${secondsBoard}`
+  tRow.appendChild(tdTime)
+  const scoresContainer=document.getElementById('scores')
+  scoresContainer.classList.replace('hidden','scores')
+  main.classList.replace('main','hidden')
+  const playAgain = document.getElementById('playAgain')
+  playAgain.onclick = () =>{
+      scoresContainer.classList.replace('scores','hidden')
+      const loginContainer=document.getElementById('login')
+      loginContainer.classList.replace('hidden','login')
+      main.classList.add("hidden");
+      login.classList.remove("hidden");
+      active=true;
+  }
+}   
+
+function timer(){
+  
+  setInterval(() => {
+    
+    if (active===true) {
+      
+      seconds++;
+      if (seconds === 60) {
+        seconds = 0;
+        minutes++;
+        
+      }
+      secondsBoard = `${seconds}`;
+      minutesBoard = `${minutes}`;
+      if (seconds < 10) {
+        secondsBoard = `0${seconds}`;
+      }
+      if (minutes < 10) {
+        minutesBoard = `0${minutes}`;
+      }
+      timerContainer.innerHTML = `${minutesBoard}:${secondsBoard}`;
+  }
+},1000);
+}
+
+
+
